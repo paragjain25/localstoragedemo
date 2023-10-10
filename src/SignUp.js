@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import './SignUp.css'
 
 function SignUp() {
@@ -12,6 +12,9 @@ function SignUp() {
     const handleChange = (e) => {
       const { name, value } = e.target;
       setFormData({ ...formData, [name]: value });
+
+      // Save the form data to localStorage
+  localStorage.setItem('formData', JSON.stringify({ ...formData, [name]: value }));
     };
   
     const handleSubmit = async (e) => {
@@ -39,6 +42,15 @@ function SignUp() {
           // Handle and display error messages to the user
         }
       };
+
+      // Load saved form data from localStorage when the component mounts
+  useEffect(() => {
+    const savedData = localStorage.getItem('formData');
+    if (savedData) {
+      setFormData(JSON.parse(savedData));
+    }
+  }, []); // Empty dependency array to run only once when the component mounts
+
   
     return (
       <div className="container">
